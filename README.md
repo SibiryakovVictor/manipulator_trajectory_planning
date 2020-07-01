@@ -15,13 +15,13 @@ src/main
 - Порядок занесения: от корня манипулятора и дальше в порядке присоединения звеньев друг к другу
 - Пример заполнения структуры:
 
-![Image alt](https://github.com/SibiryakovVictor/training_release_rep/raw/master/link_init_info_example.png)
+![Image alt](https://github.com/SibiryakovVictor/manipulator_trajectory_planning/raw/master/link_init_info_example.png)
 
 #### Добавить все заполненные структуры в оператор возврата return функции getManipInitInfo (env/info_loader/info_loader.cpp)
 
 Пример:
 
-![Image alt](https://github.com/SibiryakovVictor/training_release_rep/raw/master/getManipInitInfo_return_example.png)
+![Image alt](https://github.com/SibiryakovVictor/manipulator_trajectory_planning/raw/master/getManipInitInfo_return_example.png)
 
 #### Уточнить параметры добавляемого манипулятора в env/manipulator/manip_parameters.h и config_space/conf_space_dims.h
 
@@ -29,22 +29,22 @@ src/main
 
 Пример
 
-![Image alt](https://github.com/SibiryakovVictor/training_release_rep/raw/master/ranges_motion_example.png)
+![Image alt](https://github.com/SibiryakovVictor/manipulator_trajectory_planning/raw/master/ranges_motion_example.png)
 
 ### Описание препятствий
-#### Занести информацию о препятствиях в функцию getObstInitInfo с помощью структур AttachedDetal
+#### Занести информацию о препятствиях в функцию getObstInitInfo с помощью структур AttachedDetail
 - Определение функции getObstInitInfo: env/info_loader/info_loader.cpp
 - Определение структуры данных AttachedDetail: env/primitives/attached_detail
 - Порядок занесения: произвольный
 - Пример заполнения:
 
-![Image alt](https://github.com/SibiryakovVictor/training_release_rep/raw/master/attached_detail_example.png)
+![Image alt](https://github.com/SibiryakovVictor/manipulator_trajectory_planning/raw/master/attached_detail_example.png)
 
 #### Добавить все заполненные структуры в оператор возврата return функции getObstInitInfo (env/info_loader/info_loader.cpp)
 
 Пример
 
-![Image alt](https://github.com/SibiryakovVictor/training_release_rep/raw/master/getObstInitInfo_return_example.png)
+![Image alt](https://github.com/SibiryakovVictor/manipulator_trajectory_planning/raw/master/getObstInitInfo_return_example.png)
 
 #### Уточнить параметры препятствий в env/obstacles/obst_parameters.h и config_space/conf_space_dims.h
 
@@ -58,7 +58,7 @@ src/main
 
 ## Пример использования
 
-![Image alt](https://github.com/SibiryakovVictor/training_release_rep/raw/master/usage_MotionPlanner_example.png)
+![Image alt](https://github.com/SibiryakovVictor/manipulator_trajectory_planning/raw/master/usage_MotionPlanner_example.png)
 
 ## Дополнительные возможности при использовании
 
