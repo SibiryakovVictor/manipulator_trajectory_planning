@@ -1,3 +1,13 @@
+/**************************************************************************************************
+Описание
+
+Некоторые определения для модулей пространства имён env
+
+Разработчик: Сибиряков Виктор
+Заметки
+**************************************************************************************************/
+
+
 #pragma once
 
 #include "Eigen/Eigen"
@@ -10,10 +20,7 @@ namespace motion_planner
 {
     namespace env
     {
-        typedef Eigen::Vector3f Position;
-        typedef Eigen::Matrix3f Orient;
-
-        enum class Axis { X, Y, Z };
+        const uint16_t dim_space = 3;
 
         struct EulerAngles
         {
@@ -45,7 +52,6 @@ namespace motion_planner
                     } );
             }
         };
-
-        const uint16_t dim_space = 3;
     }
 }
+

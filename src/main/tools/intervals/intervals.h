@@ -1,8 +1,22 @@
+/**************************************************************************************************
+Описание
+
+Файл, отвечающий за определение диапазона движения звеньев 
+(определены в константе realRangesMotion)
+
+Разработчик: Сибиряков Виктор
+Заметки
+для доступа к константе с диапазонами нужно инклуднуть данный файл и вызвать 
+motion_planner::tools::RangeLinksMotion::get() 
+**************************************************************************************************/
+
+
 #pragma once
 
 #include "main/env/manipulator/manip_parameters.h"
 #include "main/tools/float_operations/float_operations.h"
 #include "main/config_space/point/point.h"
+
 
 
 namespace motion_planner
@@ -113,19 +127,19 @@ typedef motion_planner::tools::IntervalArray< motion_planner::manip::links_group
 
 const IntervalsAllDims realRangesMotion( IntervalsAllDims::IntervalArrayData{ {
 
-        motion_planner::tools::Interval( flt_op::cvtDegToRad( -180.f ), flt_op::cvtDegToRad( 180.f ) ),
+        motion_planner::tools::Interval( motion_planner::flt_op::cvtDegToRad( -180.f ), motion_planner::flt_op::cvtDegToRad( 180.f ) ),
 
-        motion_planner::tools::Interval( flt_op::cvtDegToRad( -90.f ), flt_op::cvtDegToRad( 90.f ) ),
+        motion_planner::tools::Interval( motion_planner::flt_op::cvtDegToRad( -90.f ), motion_planner::flt_op::cvtDegToRad( 90.f ) ),
 
-        motion_planner::tools::Interval( flt_op::cvtDegToRad( -180.f ), flt_op::cvtDegToRad( 180.f ) ),
+        motion_planner::tools::Interval( motion_planner::flt_op::cvtDegToRad( -180.f ), motion_planner::flt_op::cvtDegToRad( 180.f ) ),
 
-        motion_planner::tools::Interval( flt_op::cvtDegToRad( -180.f ), flt_op::cvtDegToRad( 180.f ) ),
+        motion_planner::tools::Interval( motion_planner::flt_op::cvtDegToRad( -180.f ), motion_planner::flt_op::cvtDegToRad( 180.f ) ),
 
-        motion_planner::tools::Interval( flt_op::cvtDegToRad( -180.f ), flt_op::cvtDegToRad( 180.f ) ),
+        motion_planner::tools::Interval( motion_planner::flt_op::cvtDegToRad( -180.f ), motion_planner::flt_op::cvtDegToRad( 180.f ) ),
 
-        motion_planner::tools::Interval( flt_op::cvtDegToRad( -14.f ), flt_op::cvtDegToRad( 50.f ) ),
+        motion_planner::tools::Interval( motion_planner::flt_op::cvtDegToRad( -14.f ), motion_planner::flt_op::cvtDegToRad( 50.f ) ),
 
-        motion_planner::tools::Interval( flt_op::cvtDegToRad( -50.f ), flt_op::cvtDegToRad( 14.f ) )
+        motion_planner::tools::Interval( motion_planner::flt_op::cvtDegToRad( -50.f ), motion_planner::flt_op::cvtDegToRad( 14.f ) )
 
     } }
 );
@@ -224,3 +238,4 @@ private:
     static bool canBothDirections[ manip::links_groups ];
 
 };
+

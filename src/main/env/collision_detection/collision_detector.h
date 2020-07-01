@@ -1,8 +1,21 @@
+/**************************************************************************************************
+Описание
+
+Определяет наличие пересечение двух OBB (методом areObjectsCollided) в две фазы:
+* грубая, используя сравнение расстояния между сферами, в которые заключаются OBB, 
+с суммой их радиусов
+* точная, с применением SAT (separating axis theorem)
+Разработчик: Сибиряков Виктор
+Заметки
+**************************************************************************************************/
+
+
+
 #pragma once
 
 #include "main/env/primitives/obb/obb.h"
-
 #include "Eigen/Core"
+
 
 
 namespace motion_planner
@@ -23,7 +36,7 @@ public:
 private:
 
 	bool spherePhase( 
-		const env::Position & centerPos1, const env::Position & centerPos2,
+		const Eigen::Vector3f & centerPos1, const Eigen::Vector3f & centerPos2,
 		float r1, float r2 
 	) const;
 
@@ -32,10 +45,9 @@ private:
 
 
 	bool checkSeparatingPlane(
-		const env::Position & diffP, const env::Position & Plane,
-		const env::Orient & axisOrient1, const env::Orient & axisOrient2,
+		const Eigen::Vector3f & diffP, const Eigen::Vector3f & Plane,
+		const Eigen::Matrix3f & axisOrient1, const Eigen::Matrix3f & axisOrient2,
 		const env::Obb::Sizes & sizes1, const env::Obb::Sizes & sizes2
 	) const;
 
-	Eigen::Vector3f cross( const Eigen::Vector3f & v1, const Eigen::Vector3f & v2 ) const;
 };

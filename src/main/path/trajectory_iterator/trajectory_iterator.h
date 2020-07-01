@@ -1,11 +1,21 @@
+/**************************************************************************************************
+Описание
+
+Класс, позволяющий последовательно получить точки отрезка конфигурационного пространства с заданным
+шагом
+
+Разработчик: Сибиряков Виктор
+Заметки
+**************************************************************************************************/
+
+
+
 #pragma once
 
 #include <cinttypes>
 #include <algorithm>
 
-#include "main/config_space/point/point.h"
 #include "main/config_space/segment/segment.h"
-
 
 
 namespace motion_planner
@@ -30,14 +40,14 @@ namespace motion_planner
 			}
 
 			void setTrajectory( const config_space::Point & startPoint, 
-				const config_space::Point & endPoint,
-				float maxPrec );
+								const config_space::Point & endPoint,
+								float maxPrec );
 
 			config_space::Point getNextPoint();
 
 			void resetStep();
 
-			void changePrec( float prec );
+			void changePrec( float prec_Rad );
 
 			config_space::Point start() const;
 
@@ -51,10 +61,8 @@ namespace motion_planner
 
 			float m_curParamValue = 0.f;
 			float m_paramStep = 0.f;
-
 		};
 
 	}
 
 }
-

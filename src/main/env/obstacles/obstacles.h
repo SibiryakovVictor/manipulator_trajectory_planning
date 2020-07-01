@@ -1,3 +1,15 @@
+/**************************************************************************************************
+Описание
+
+Описывает контейнер препятствий
+
+Разработчик: Сибиряков Виктор
+Заметки
+* Configurator - дружественный класс, чтобы менять ограничивающий объем звена и осуществлять
+поворот вокруг заданной оси на заданный угол;
+**************************************************************************************************/
+
+
 #pragma once
 
 #include "main/env/env_def.h"
@@ -5,9 +17,10 @@
 #include "main/env/primitives/obb/obb.h"
 
 
+
 namespace motion_planner
 {
-    class ConfigManager;
+    class Configurator;
 
     namespace env
     {
@@ -20,7 +33,7 @@ class motion_planner::env::Obstacles
 {
 public:
 
-    friend class motion_planner::ConfigManager;
+    friend class motion_planner::Configurator;
 
     static const uint16_t biasObstId = UINT16_MAX / 2;
 
@@ -28,17 +41,7 @@ public:
         m_obstInfo( objects )
     {}
 
-    const Obb * begin() const;
-
-    const Obb * end() const;
-
-    const Obb & getBody( uint16_t obstBiasedId ) const;    
-
-    const Position & getObstPos( uint16_t obstId ) const;
-
-    const Orient & getObstOrient( uint16_t obstId ) const;
-
-    const Obb::Sizes & getObstSizes( uint16_t obstId ) const;
+    const Obb & getBody( uint16_t obstBiasedId ) const;
 
 
 private:
@@ -49,4 +52,3 @@ private:
 
     void rotate( uint16_t obstBiasedId, float angle, Eigen::Vector3f axis );
 };
-

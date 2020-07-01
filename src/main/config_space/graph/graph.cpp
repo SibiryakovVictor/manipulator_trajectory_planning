@@ -1,204 +1,65 @@
+/**************************************************************************************************
+Описание
+
+Реализация графа для хранения вершин и рёбер деревьев алгоритма EST.
+
+Разработчик: Сибиряков Виктор
+Заметки
+* максимальное количество вершин графа - параметр nodes_limit в "config_space/graph/graph_parameters.h"
+* максимальное количество рёбер у вершин - параметр edges_limit в "config_space/graph/graph_parameters.h"
+**************************************************************************************************/
+
+
+
 #include "graph.h"
 
 #include <algorithm>
 
+using namespace motion_planner::config_space::graph;
 using namespace motion_planner::config_space;
-using namespace graph;
 
 
 
-
-Graph::Graph() :
-	m_nodesStorage( new Node[ capacity ] )
-{}
-
-
-
-Graph::~Graph()
-{
-	delete[] m_nodesStorage;
-}
-
-
-
-NodeId Graph::insertNode( const Point & config )
+/**************************************************************************************************
+Описание:
+присваивает конфигурацию свободной вершине на позиции m_nodesAmount
+Аргументы:
+* config: конфигурация
+Возврат: позиция вершины, которой была назначена конфигурация
+Замечания:
+**************************************************************************************************/
+NodeId Graph::addNode( const Point & config )
 {
 
-	if ( getNodesAmount() > ( capacity - 2 ) )
+	if ( getNodesAmount() > ( nodes_limit - 1 ) )
 	{
-
 		while ( true )
 		{
-			; /* � ����� ������ ��� ��������� ���� ��� ������ */
+			; // в графе больше нет свободных мест для вершин
 		}
-
 	}
 	
-	m_nodesStorage[ m_freeNodePos ].m_config = config;
+	m_nodesStorage[ m_nodesAmount ].config = config;
 
-	m_nodesStorage[ m_freeNodePos ].m_isNodeInserted = true;
+	auto addedNodePos = m_nodesAmount;
 
-	NodeId addedNodePos = m_freeNodePos;
-
-	m_nodesInvolved++;
-
-	updateAvailableIndex();
-
-	verifyLastPos( addedNodePos );
+	m_nodesAmount++;
 
 	return addedNodePos;
 }
 
 
 
-void Graph::decreaseFreeEdges( uint16_t nodePos )
-{
 
-	m_nodesStorage[ nodePos ].m_curFreeEdge++;
-
-}
-
-
-
-const Point & Graph::getNodeConfig( NodeId nodePos ) const
-{
-	return m_nodesStorage[ nodePos ].m_config;
-}
-
-
-
-
-uint16_t Graph::getNodesAmount() const
-{
-	return m_nodesInvolved;
-}
-
-
-
-
-bool Graph::hasNodeFreeEdge( NodeId nodePos ) const
-{
-	return ( m_nodesStorage[ nodePos ].m_curFreeEdge < edges_limit );
-}
-
-
-
-
-uint8_t Graph::getAmountFreeEdges( NodeId nodePos ) const
-{
-	return ( edges_limit - m_nodesStorage[ nodePos ].m_amountEdgesConnected );
-}
-
-
-
-uint16_t Graph::getPosLastNode() const
-{
-	return m_lastNodePos;
-}
-
-
-
-NodeId Graph::getNodeId( NodeId nodePos, EdgeId edgePos ) const
-{
-	return m_nodesStorage[ nodePos ].edges[ edgePos ];
-}
-
-
-
-
-bool Graph::isNodeInserted( NodeId nodePos ) const
-{
-	return m_nodesStorage[ nodePos ].m_isNodeInserted;
-}
-
-
-
-
-bool Graph::isNodeInGraph( uint16_t nodePos ) const
-{
-	return ( m_nodesStorage[ nodePos ].m_amountEdgesConnected != 0 );  
-}
-
-
-
-
-void Graph::reset()
-{
-	const auto lastPos = getPosLastNode();
-
-	for ( NodeId curNodePos = 0; curNodePos != lastPos + 1; curNodePos++ )
-	{
-		m_nodesStorage[ curNodePos ].resetFull();
-	}
-
-	m_freeNodePos = 0;
-
-	m_nodesInvolved = 0;
-
-	m_lastNodePos = 0;
-}
-
-
-
-
-uint16_t Graph::getNodeAmountEdges( NodeId nodePos ) const
-{
-	return m_nodesStorage[ nodePos ].m_amountEdgesConnected;
-}
-
-
-
-
-void Graph::verifyFreeEdgePos( NodeId nodePos, EdgeId testingEdge )
-{
-
-	Node & node = m_nodesStorage[ nodePos ];
-
-	if ( testingEdge < node.m_curFreeEdge )
-	{
-		node.m_curFreeEdge = testingEdge;
-	}
-
-}
-
-
-
-void Graph::findFreeEdgePos( NodeId nodePos )
-{
-	static const uint8_t border = edges_limit - 2;
-
-
-	Node & node = m_nodesStorage[ nodePos ];	
-
-	if ( node.m_curFreeEdge > border )
-	{
-		node.m_curFreeEdge = edges_limit;
-
-		return;
-	}
-
-
-	uint8_t possiblePos = node.m_curFreeEdge + 1;
-
-	while ( possiblePos != edges_limit )
-	{
-
-		if ( node.edges[ possiblePos ] == UINT16_MAX )
-		{
-			node.m_curFreeEdge = possiblePos;
-
-			return;
-		}
-
-		possiblePos++;
-
-	}
-
-	node.m_curFreeEdge = edges_limit;
-
-}
-
-
+/**************************************************************************************************
+Описание:
+заносит идентификаторы звеньев в список их рёбер на свободные позиции в списке
+Аргументы:
+* node1Pos: позиция первой вершины в списке вершин
+* node2Pos: позиция второй вершины в списке вершин
+Возврат:
+Замечания:
+**************************************************************************************************/
 void Graph::addEdge( NodeId node1Pos, NodeId node2Pos )
 {
 
@@ -206,212 +67,123 @@ void Graph::addEdge( NodeId node1Pos, NodeId node2Pos )
 	Node & node2 =  m_nodesStorage[ node2Pos ];
 
 
-	if ( ( node1.m_curFreeEdge == edges_limit ) ||
-		( node2.m_curFreeEdge == edges_limit ) )
+	if ( ( node1.amountEdgesConnected == edges_limit ) ||
+		( node2.amountEdgesConnected == edges_limit ) )
 	{
 		while ( true )
 		{
-			; /* ���� �� ����� ��� ����� ������������ ���������� ���� */
+			; // одна из вершин уже не имеет свободных рёбер
 		}
 	}
 
-	
-	uint8_t freeEdgeNode1 = node1.m_curFreeEdge;
-	uint8_t freeEdgeNode2 = node2.m_curFreeEdge;
+
+	auto freeEdgeNode1 = node1.amountEdgesConnected;
+	auto freeEdgeNode2 = node2.amountEdgesConnected;
 
 	node1.edges[ freeEdgeNode1 ] = node2Pos;
-	node1.m_amountEdgesConnected++;
-	node2.m_orderConnection[ freeEdgeNode2 ] = freeEdgeNode1;
+	node1.amountEdgesConnected++;
 
 	node2.edges[ freeEdgeNode2 ] = node1Pos;
-	node2.m_amountEdgesConnected++;
-	node1.m_orderConnection[ freeEdgeNode1 ] = freeEdgeNode2;
-
-	findFreeEdgePos( node1Pos );
-	findFreeEdgePos( node2Pos );
-
+	node2.amountEdgesConnected++;
 }
 
 
 
-void Graph::removeEdge( NodeId nodePos, EdgeId edgePos )
+
+/**************************************************************************************************
+Описание:
+обнуляет все рёбра у вершин и их количество ближайших соседей, а также количество вершин в графе и
+свободную позицию
+Аргументы:
+Возврат:
+Замечания:
+**************************************************************************************************/
+void Graph::reset()
 {
-
-	Node & node = m_nodesStorage[ nodePos ];
-
-	EdgeId edgeNeighbor = node.m_orderConnection[ edgePos ];
-
-	NodeId neighborPos = node.edges[ edgePos ];
-
-	Node & nodeNeighbor = m_nodesStorage[ neighborPos ]; 
-
-	node.edges[ edgePos ] = UINT16_MAX;
-	node.m_amountEdgesConnected--;
-	node.m_orderConnection[ edgePos ] = UINT8_MAX;
-
-	if ( ( node.m_amountEdgesConnected == 0 ) && ( nodePos > 1 ) )
-	{
-		resetNodeNotConn( nodePos );
-	}
-	else
-	{
-		verifyFreeEdgePos( nodePos, edgePos );
-	}
-
-	nodeNeighbor.edges[ edgeNeighbor ] = UINT16_MAX; 
-	nodeNeighbor.m_amountEdgesConnected--;
-	nodeNeighbor.m_orderConnection[ edgeNeighbor ] = UINT8_MAX;
-
-	if ( ( nodeNeighbor.m_amountEdgesConnected == 0 ) && ( neighborPos > 1 ) )
-	{
-		resetNodeNotConn( neighborPos );
-	}
-	else
-	{
-		verifyFreeEdgePos( neighborPos, edgeNeighbor );
-	}
-
-}
-
-
-
-void Graph::removeNode( NodeId nodePos )
-{
-
-	Node & node = m_nodesStorage[ nodePos ];
-
-	if ( isNodeInGraph( nodePos ) )
-	{
-		for ( uint8_t curEdge = 0; curEdge != edges_limit; curEdge++ )
+	std::for_each( m_nodesStorage, m_nodesStorage + m_nodesAmount, 
+		[]( Node & node)
 		{
-			NodeId neighborId = node.edges[ curEdge ];
+			node.reset();
+		} );
 
-			if ( neighborId  != UINT16_MAX )
-			{
-				removeEdge( nodePos, curEdge );
-			}
-		}
-
-		node.m_amountEdgesConnected = 0;
-	}
-
-	if ( isNodeInserted( nodePos ) )
-	{
-		resetNodeNotConn( nodePos );
-	}
-
+	m_nodesAmount = 0;
 }
 
 
 
-void Graph::updateAvailableIndex()
+bool Graph::isLimitNodesReached() const
 {
-
-	static const uint16_t indexBorder = capacity - 2;
-
-	if ( m_freeNodePos > indexBorder )
-	{
-		m_freeNodePos = capacity - 1;
-		return;
-	}
-
-	uint16_t possiblePos = m_freeNodePos + 1;
-
-	while ( possiblePos < ( indexBorder + 1 ) )
-	{
-
-		if ( ! isNodeInserted( possiblePos ) )
-		{
-			m_freeNodePos = possiblePos;
-
-			return;
-		}
-
-		possiblePos++;
-
-	}
-
-	m_freeNodePos = possiblePos;
-
+	return m_nodesAmount > ( nodes_limit - 2 );
 }
 
 
 
-void Graph::verifyAvailableIndex( NodeId testingNodePos )
+void Graph::increaseNodesInArea( NodeId nodePos )
 {
-
-	if ( testingNodePos < m_freeNodePos )
-	{
-		m_freeNodePos = testingNodePos;
-	}
-
+	m_nodesStorage[ nodePos ].nodesInArea++;
 }
 
 
 
-void Graph::resetNodeNotConn( NodeId nodePos )
+
+NodeId Graph::getNodesInArea( NodeId nodePos ) const
 {
-	m_nodesStorage[ nodePos ].resetNotConn();
-
-	m_nodesInvolved--;
-
-	verifyAvailableIndex( nodePos );
-
-	updateLastPos( nodePos );
+	return m_nodesStorage[ nodePos ].nodesInArea;
 }
 
 
 
-void Graph::verifyLastPos( NodeId nodePos )
+
+void Graph::setNodesInArea( NodeId nodePos, uint16_t nodesInArea )
 {
-	if ( nodePos > m_lastNodePos )
-	{
-		m_lastNodePos = nodePos;
-	}
+	m_nodesStorage[ nodePos ].nodesInArea = nodesInArea;
 }
 
 
 
-void Graph::updateLastPos( NodeId nodePos )
+
+const Point & Graph::getNodeConfig( NodeId nodePos ) const
 {
-	if ( nodePos != m_lastNodePos )
-	{
-		return;
-	}
-
-	m_lastNodePos = 0;
-
-	while ( nodePos != 0 )
-	{
-		nodePos--;
-
-		if ( isNodeInserted( nodePos ) )
-		{
-			m_lastNodePos = nodePos;
-
-			break;
-		}
-	}
+	return m_nodesStorage[ nodePos ].config;
 }
 
 
 
-void Graph::increaseNodesInArea( NodeId node )
+
+NodeId Graph::getNodesAmount() const
 {
-	m_nodesStorage[ node ].m_nodesInArea++;
+	return m_nodesAmount;
 }
 
 
 
-uint8_t Graph::getNodesInArea( NodeId nodePos ) const
+
+bool Graph::hasNodeFreeEdge( NodeId nodePos ) const
 {
-	return m_nodesStorage[ nodePos ].m_nodesInArea;
+	return ( m_nodesStorage[ nodePos ].amountEdgesConnected < edges_limit );
 }
 
 
 
-void Graph::setNodesInArea( NodeId node, uint16_t nodesInArea )
+
+EdgeId Graph::getAmountFreeEdges( NodeId nodePos ) const
 {
-	m_nodesStorage[ node ].m_nodesInArea = nodesInArea;
+	return ( edges_limit - m_nodesStorage[ nodePos ].amountEdgesConnected );
+}
+
+
+
+
+NodeId Graph::getNodePos( NodeId nodePos, EdgeId edgePos ) const
+{
+	return m_nodesStorage[ nodePos ].edges[ edgePos ];
+}
+
+
+
+
+EdgeId Graph::getNodeAmountEdges( NodeId nodePos ) const
+{
+	return m_nodesStorage[ nodePos ].amountEdgesConnected;
 }
 

@@ -1,5 +1,17 @@
+/**************************************************************************************************
+Описание
+
+Определение отрезка конфигурационного пространства (две его точки, соединенные прямой)
+
+Разработчик: Сибиряков Виктор
+Заметки
+**************************************************************************************************/
+
+
+
 #include "segment.h"
 
+#include <cmath>
 #include <cfloat>
 #include <algorithm>
 
@@ -8,6 +20,14 @@ using namespace motion_planner::config_space;
 
 
 
+/**************************************************************************************************
+Описание:
+возвращает точку отрезка, рассчитывая её из переданной величины параметра 
+(по аналогии с параметрическим уравнением прямой:
+параметр 0 - начало отрезка, 1 - конец отрезка, 0.5 - середина и т.д.)
+Аргументы: величина параметра
+Возврат: точка отрезка
+**************************************************************************************************/
 Point Segment::getPoint( float param ) const
 {
 	Point result;
@@ -35,32 +55,29 @@ float Segment::getMaxInterval() const
 
 
 
-
+/**************************************************************************************************
+Описание:
+определяет величины проекций расстояния между точками на оси конфигурационного пространства,
+запоминая номер измерения с максимальной величиной
+Аргументы:
+Возврат:
+**************************************************************************************************/
 void Segment::calcIntervals()
 {
-
 	auto maxInterval = FLT_MIN;
 
-	auto dim = 0;
+	for ( auto dim = 0; dim != conf_space_dims; dim++ )
+	{
+		m_intervals[ dim ] = m_end[ dim ] - m_start[ dim ];
 
-	std::for_each( m_intervals, m_intervals + conf_space_dims, 
-		[ &dim, &maxInterval, this ]( float& interval )
+		auto interAbs = std::fabsf( m_intervals[ dim ] );
+
+		if ( maxInterval < interAbs )
 		{
-
-			interval = m_end[ dim ] - m_start[ dim ];
-
-			auto interAbs = std::fabsf( interval );
-
-			if ( maxInterval < interAbs )
-			{
-				maxInterval = interAbs;
-				m_maxInterPos = dim;
-			}
-
-			dim++;
-
-		} );
-
+			maxInterval = interAbs;
+			m_maxInterPos = dim;
+		}
+	}
 }
 
 
@@ -69,21 +86,26 @@ void Segment::calcIntervals()
 
 void Segment::changeStartEnd( const Point & start, const Point & end )
 {
-
 	m_start = start;
 
 	m_end = end;
 
 	calcIntervals();
-
 }
 
 
 
-
-float Segment::calcParamStep( float prec ) const
+/**************************************************************************************************
+Описание:
+определяет величину параметра такую, чтобы евклидово расстояние между точками не превышало prec_Rad
+Аргументы:
+* prec_Rad: точность или максимальное евклидово расстояние между выдаваемыми точками отрезка
+Возврат:
+величина параметра в соответствии с точностью
+**************************************************************************************************/
+float Segment::calcParamStep( float prec_Rad ) const
 {
-	auto amountPoints = std::fabsf( m_intervals[ m_maxInterPos ] ) / prec;
+	auto amountPoints = std::fabsf( m_intervals[ m_maxInterPos ] ) / prec_Rad;
 
 	if ( amountPoints < 1.f )
 	{
@@ -92,3 +114,4 @@ float Segment::calcParamStep( float prec ) const
 
 	return 1.f / amountPoints;
 }
+

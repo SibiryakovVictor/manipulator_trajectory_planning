@@ -1,7 +1,18 @@
+/**************************************************************************************************
+Описание
+
+Определение интерфейса, получающего требуемую информацию о вершине на запрашиваемой позиции
+
+Разработчик: Сибиряков Виктор
+Заметки
+**************************************************************************************************/
+
+
 #pragma once
 
-#include "typedefs.h"
+#include "graph_typedefs.h"
 #include "main/config_space/point/point.h"
+
 
 
 namespace motion_planner
@@ -15,6 +26,7 @@ namespace motion_planner
     }
 }
 
+
 class motion_planner::config_space::graph::INodesList
 {
 
@@ -22,19 +34,18 @@ public:
 
     virtual ~INodesList() {}
 
-    virtual uint16_t getNodesAmount() const = 0;
-
-    virtual NodeId getPosLastNode() const = 0;
+    virtual NodeId getNodesAmount() const = 0;
 
     virtual bool hasNodeFreeEdge( NodeId nodePos ) const = 0;
 
-    virtual uint8_t getNodesInArea( NodeId nodePos ) const = 0;
+    virtual EdgeId getAmountFreeEdges( NodeId nodesPos ) const = 0;
 
-    virtual uint8_t getAmountFreeEdges( NodeId nodesPos ) const = 0;
+    virtual EdgeId getNodeAmountEdges( NodeId nodePos ) const = 0;
 
-    virtual bool isNodeInserted( NodeId nodePos ) const = 0;
+    virtual const Point & getNodeConfig( NodeId nodePos ) const = 0;
 
-    virtual const config_space::Point & getNodeConfig( NodeId nodePos ) const = 0;
-
+    // возвращает число ближайших соседей вершины, которое определяется 
+    // работой класса Est (est.h)
+    virtual NodeId getNodesInArea( NodeId nodePos ) const = 0;
 };
 

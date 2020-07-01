@@ -1,55 +1,35 @@
+/**************************************************************************************************
+Описание
+
+Описывает контейнер препятствий
+
+Разработчик: Сибиряков Виктор
+Заметки
+* Configurator - дружественный класс, чтобы менять ограничивающий объем звена и осуществлять
+поворот вокруг заданной оси на заданный угол;
+**************************************************************************************************/
+
+
+
 #include "obstacles.h"
 
 using namespace motion_planner::env;
 using namespace motion_planner;
 
 
-const Obb * Obstacles::begin() const
-{
-    return m_obstInfo.obsts;
-}
 
-
-
-
-const Obb * Obstacles::end() const
-{
-    return m_obstInfo.obsts + obst::obst_amount;
-}
-
-
-
-
-
+/**************************************************************************************************
+Описание:
+возвращает OBB препятствия по смещенному идентификатору, заданному относительно константы biasObstId
+пример запроса OBB (значения параметра obstBiasedId) на позиции k в контейнере: biasObstId + k; 
+Аргументы:
+* config: конфигурация текущего звена/группы звеньев
+Возврат:
+**************************************************************************************************/
 const Obb & Obstacles::getBody( uint16_t obstBiasedId ) const
 {
     return m_obstInfo.obsts[ obstBiasedId - biasObstId ];
 }
-
-
-
-
-const Position & Obstacles::getObstPos( uint16_t obstId ) const
-{
-    return m_obstInfo.obsts[ obstId ].getCenterPos();
-}
-
-
-
-
-const Orient & Obstacles::getObstOrient( uint16_t obstId ) const
-{
-    return m_obstInfo.obsts[ obstId ].getOrient();
-}
-
-
-
-
-const Obb::Sizes & Obstacles::getObstSizes( uint16_t obstId ) const
-{
-    return m_obstInfo.obsts[ obstId ].getSizes();
-}
-
 
 
 

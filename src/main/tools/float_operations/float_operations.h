@@ -1,12 +1,27 @@
+/**************************************************************************************************
+Описание
+
+Вспомогательные функции
+
+Разработчик: Сибиряков Виктор
+Заметки
+**************************************************************************************************/
+
+
 #pragma once
 
 
-namespace flt_op
+namespace motion_planner
 {
-    const float mathPI = 3.14159f;
+    namespace flt_op
+    {
+        const float mathPI = 3.141592653589793238462643f;
 
-	float getRandomFloat( float lowLimit, float highLimit );
+        float getRandomFloat( float lowLimit, float highLimit );
 
-    float cvtDegToRad( float degrees );
+        float cvtDegToRad( float degrees );
 
+        float cvtRadToDeg( float radians );
+    }
 }
+

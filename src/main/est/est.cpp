@@ -1,3 +1,29 @@
+/**************************************************************************************************
+Описание
+
+Класс, реализующий алгоритм планирования движения EST
+
+Разработчик: Сибиряков Виктор
+Заметки
+* радиус r поиска ближайших соседей от опорной вершины - поле m_radiusGen
+* расстояние d между парой вершин, принадлежащих разным деревьям, 
+на котором деревья могут быть соединены - поле m_radiusConn
+* если траектория получается длинной, попробовать снизить значения 
+* если траектория ищется долго, попробовать увеличить значения
+
+!!! ОЧЕНЬ ВАЖНО !!!
+величины вышеописанных параметров всегда задаются квадратом желаемого значения, поскольку
+при расчете всех расстояний используется метод Point::calcDistNoSqrt (config_space/point/point.cpp),
+поэтому для этого используются приватные методы calcRadiusGen и calcRadiusConn, соответственно
+желаемые значения ПО УМОЛЧАНИЮ лучше вписывать в инициализацию поля так:
+float m_radiusGen = calcRadiusGen( init_radius_gen );
+а чтобы менять значения в процессе работы - использовать методы класса Configurator,
+в эти методы ОБЯЗАТЕЛЬНО передавать именно желаемое значение, а не его квадрат.
+* Configurator - дружественный класс, чтобы менять параметры алгоритма EST.
+**************************************************************************************************/
+
+
+
 #include "est.h"
 
 #include "main/tools/float_operations/float_operations.h"
@@ -6,44 +32,53 @@
 using namespace motion_planner::config_space::graph;
 using namespace motion_planner;
 
-
-
-bool Est::isConnectionSuccessful()
+/**************************************************************************************************
+Описание:
+выполняет процедуру соединения алгоритма EST, проверяя на возможность соединения пары, 
+включающие в себя новые добавленные узлы в одно из деревьев и все узлы другого дерева
+Аргументы:
+Возврат:
+**************************************************************************************************/
+void Est::connection()
 {
-    bool isStartListChanged = ( m_startCheckPos != m_posListEndStart );
-    bool isGoalListChanged = ( m_goalCheckPos != m_posListEndGoal );
+    const bool isStartListChanged = ( m_startCheckPos != m_posListEndStart );
+    const bool isGoalListChanged = ( m_goalCheckPos != m_posListEndGoal );
 
     if ( ( ! isStartListChanged ) && ( ! isGoalListChanged ) )
     {
-        return false;
+        return;
     }
+
+    bool isConnectSuccessfull = false;
 
     if ( isGoalListChanged && 
-        areTreesConnected( 0, m_posListEndStart, m_goalCheckPos, m_posListEndGoal ) )
+        tryConnectTrees( 0, m_posListEndStart, m_goalCheckPos, m_posListEndGoal ) )
     {
-        m_goalCheckPos = m_posListEndGoal;
-        m_startCheckPos = m_posListEndStart;
-
-        return true;
+        isConnectSuccessfull = true;
     }
 
-    if ( isStartListChanged &&
-        areTreesConnected( m_startCheckPos, m_posListEndStart, 0, m_posListEndGoal ) )
+    if ( ( ! isConnectSuccessfull ) && isStartListChanged &&
+        tryConnectTrees( m_startCheckPos, m_posListEndStart, 0, m_posListEndGoal ) )
     {
-        m_goalCheckPos = m_posListEndGoal;
-        m_startCheckPos = m_posListEndStart;
-
-        return true;
+        isConnectSuccessfull = true;
     }
-   
+
+
     m_goalCheckPos = m_posListEndGoal;
     m_startCheckPos = m_posListEndStart;
 
-    return false;
+    m_flagTreesConnected = isConnectSuccessfull;
 }
 
 
 
+/**************************************************************************************************
+Описание:
+выполняет процедуру расширения алгоритма EST, пытаясь расширить одно из деревьев;
+после окончания процедуры расширения смена выращиваемого дерева происходит автоматически;
+Аргументы:
+Возврат:
+**************************************************************************************************/
 void Est::expansion()
 {
     const auto nodeListEnd = getListEnd();
@@ -51,7 +86,7 @@ void Est::expansion()
     for ( NodeId pos = 0; pos != nodeListEnd; pos++ )
     {
         if ( calcProbabilityNode( m_listCompStatus[ m_treeId ][ pos ] ) 
-            < flt_op::getRandomFloat( 0.005f, 0.995f ) )
+            < flt_op::getRandomFloat( 0.001f, 0.999f ) )
         {
             continue;
         }
@@ -69,7 +104,7 @@ void Est::sampleNodesInArea( NodeId refNodeId )
 {
     const auto & refConfig = m_mapFreeCSpace.getNodeConfig( refNodeId );
 
-    for ( uint16_t sample = 0; sample != samples_amount; sample++ )
+    for ( uint16_t sample = 0; sample != m_samplesAmount; sample++ )
     {
         if ( ! m_mapFreeCSpace.hasNodeFreeEdge( refNodeId ) )
         {
@@ -78,7 +113,7 @@ void Est::sampleNodesInArea( NodeId refNodeId )
 
         auto genConfig( generateNearConfig( refConfig ) );
 
-        tryConnectSample( genConfig, refNodeId, refConfig );
+        tryConnectSample( genConfig, refConfig, refNodeId );
     }
 }
 
@@ -175,11 +210,14 @@ void Est::addToList( NodeId nodePos )
 
 
 
-
+/**************************************************************************************************
+Описание:
+сброс информации о предыдущем поиске пути
+Аргументы:
+Возврат:
+**************************************************************************************************/
 void Est::reset()
 {
-    m_posConnectGoal = goal_node_pos;
-
     m_posListEndStart = 1;
     m_posListEndGoal = 1;
 
@@ -195,8 +233,9 @@ void Est::reset()
 
 
 
-void Est::tryConnectSample( const config_space::Point & sampleConf, NodeId refNodeId,
-                            const config_space::Point & refConfig )
+void Est::tryConnectSample( const config_space::Point & sampleConf,
+                            const config_space::Point & refConfig,
+                            config_space::graph::NodeId refNodeId )
 {
     static const float threshold_low = 0.001f;
 
@@ -204,12 +243,12 @@ void Est::tryConnectSample( const config_space::Point & sampleConf, NodeId refNo
 
     uint16_t amountNn = 0;
 
-    uint16_t listNn[ capacity / 5 ] { 0 };
+    uint16_t listNn[ nodes_limit / 5 ] { 0 };
     uint16_t listNnEnd = 0;
 
     for ( uint16_t listPos = 0; listPos != listEnd; listPos++ )
     {
-        if ( listNnEnd == ( capacity / 5 ) )
+        if ( listNnEnd == ( nodes_limit / 5 ) )
         {
             break;
         }
@@ -242,7 +281,7 @@ void Est::tryConnectSample( const config_space::Point & sampleConf, NodeId refNo
         return;
     }
 
-    auto nodePos = m_mapFreeCSpace.insertNode( sampleConf );
+    auto nodePos = m_mapFreeCSpace.addNode( sampleConf );
     m_mapFreeCSpace.addEdge( nodePos, refNodeId );
     m_mapFreeCSpace.setNodesInArea( nodePos, amountNn );
 
@@ -257,8 +296,8 @@ void Est::tryConnectSample( const config_space::Point & sampleConf, NodeId refNo
 
 
 
-bool Est::areTreesConnected( uint16_t listStartBegin, uint16_t listStartEnd,
-                             uint16_t listGoalBegin, uint16_t listGoalEnd ) const
+bool Est::tryConnectTrees( uint16_t listStartBegin, uint16_t listStartEnd,
+                           uint16_t listGoalBegin, uint16_t listGoalEnd ) const
 {
     for ( uint16_t startListPos = listStartBegin; startListPos != listStartEnd; startListPos++ )
     {
@@ -273,12 +312,12 @@ bool Est::areTreesConnected( uint16_t listStartBegin, uint16_t listStartEnd,
 
         for ( uint16_t goalListPos = listGoalBegin; goalListPos != listGoalEnd; goalListPos++ )
         {
-            const auto nodePosGoal = m_listCompStatus[ goal_comp ][ goalListPos ];
-            
             if ( ! m_mapFreeCSpace.hasNodeFreeEdge( nodePosStart ) )
             {
                 break;
             }
+
+            const auto nodePosGoal = m_listCompStatus[ goal_comp ][ goalListPos ];
 
             if ( ! m_mapFreeCSpace.hasNodeFreeEdge( nodePosGoal ) )
             {
@@ -287,12 +326,8 @@ bool Est::areTreesConnected( uint16_t listStartBegin, uint16_t listStartEnd,
 
             const auto & confPosGoal = m_mapFreeCSpace.getNodeConfig( nodePosGoal );
 
-            if ( config_space::Point::calcDistNoSqrt( confPosStart, confPosGoal ) > m_radiusConn )
-            {
-                continue;
-            }
-
-            if ( ! m_mapValidator.isSegmentInFreeCSpace( confPosStart, confPosGoal ) )
+            if ( ( config_space::Point::calcDistNoSqrt( confPosStart, confPosGoal ) > m_radiusConn )
+                || ( ! m_mapValidator.isSegmentInFreeCSpace( confPosStart, confPosGoal ) ) )
             {
                 continue;
             }
@@ -306,3 +341,32 @@ bool Est::areTreesConnected( uint16_t listStartBegin, uint16_t listStartEnd,
     return false;
 }
 
+
+
+/**************************************************************************************************
+Описание:
+проверяет значение флага, информирующего о соединении деревьев, то есть о наличии общего ребра
+у обоих деревьев, то есть о наличии пути от стартовой вершины к целевой :)
+Аргументы:
+Возврат: значение флага, информирующего о соединении деревьев
+**************************************************************************************************/
+bool Est::areTreesConnected() const
+{
+    return m_flagTreesConnected;
+}
+
+
+
+
+float Est::calcRadiusGen( float radiusGen ) const
+{
+    return std::powf( radiusGen, 2.0f );
+}
+
+
+
+
+float Est::calcRadiusConn( float radiusConn ) const
+{
+    return std::powf( radiusConn, 2.0f );
+}

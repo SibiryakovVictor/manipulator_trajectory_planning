@@ -10,21 +10,29 @@ int main(void)
 {
     using namespace motion_planner;
     
-    MotionPlanner planner( path::traj_prec );
-    
-    TaskPlanning task( config_space::Point( { -0.14404736472671, 1.553343034275, -0.25598925748466, -3.1241393610699, 0.79116183965575, -0.13657032990509, -0.1858882412183	 } ),
-		config_space::Point( { -3.1241393610699, -1.553343034275, -0.088351084933012, 3.1241393610699, -3.1241393610699, 0.52323984496597, 0.23561944901923	 } ) );
-        
-    planner.findPath( task.start, task.goal );
+	// задание шага траектории в радианах и создание планировщика
+	float stepRad = flt_op::cvtDegToRad( 1.f );
+	MotionPlanner planner( stepRad );
+	
+	// задание стартовой и целевой конфигураций 
+	config_space::Point startConfig( { -0.14404736472671, 1.553343034275, -0.25598925748466,
+		-3.1241393610699, 0.79116183965575, -0.13657032990509, 0.13657032990509	} );
 
-    if ( planner.getSearchResult() == MotionPlanner::SearchResult::SUCCESS )
-    {
-        planner.resetStepPath();
-    }            
-        
+	config_space::Point goalConfig( { -3.1241393610699, -1.553343034275, -0.088351084933012,
+		3.1241393610699, -3.1241393610699, 0.52323984496597, -0.52323984496597 } );
 
+	planner.findPath( startConfig, goalConfig ); //запуск поиска пути
+
+	if ( planner.isPathFound() )
+	{
+		while ( ! planner.isPathPassed() )
+		{
+			config_space::Point currentPointTraj( planner.getPointTraj() );
+
+			// выполнять какие-либо манипуляции с точками траектории
+		}
+	}            
+        
     while(1);
-
-    return 0;
 }
 

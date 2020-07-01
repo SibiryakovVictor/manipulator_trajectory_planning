@@ -1,9 +1,19 @@
+/**************************************************************************************************
+Описание
+
+Реализация графа для хранения вершин и рёбер деревьев алгоритма EST.
+
+Разработчик: Сибиряков Виктор
+Заметки
+* максимальное количество вершин графа - параметр nodes_limit в "config_space/graph/graph_parameters.h"
+* максимальное количество рёбер у вершин - параметр edges_limit в "config_space/graph/graph_parameters.h"
+**************************************************************************************************/
+
+
+
 #pragma once
 
-#include "typedefs.h"
 #include "graph_parameters.h"
-#include "main/config_space/point/point.h"
-
 #include "i_nodes_list.h"
 #include "i_edges_list.h"
 
@@ -25,120 +35,68 @@ class motion_planner::config_space::graph::Graph : public INodesList, public IEd
 
 public:
 
-    explicit Graph();
-    ~Graph();
+    explicit Graph()
+    {}
 
-    NodeId insertNode( const config_space::Point & config );
-    void removeNode( NodeId nodePos );
+    NodeId addNode( const config_space::Point & config );
 
-    void addEdge( NodeId node1, NodeId node2 );
-    void removeEdge( NodeId node, EdgeId edge );
-
-    void setNodesInArea( NodeId node, uint16_t nodesInArea );
-
-    void increaseNodesInArea( NodeId node );
-
-    uint16_t getNodeAmountEdges( NodeId nodePos ) const;
+    void addEdge( NodeId node1Pos, NodeId node2Pos );
 
     void reset();
 
-    /* INodesList */
+    bool isLimitNodesReached() const;
+
+    void setNodesInArea( NodeId nodePos, uint16_t nodesInArea );
+
+    void increaseNodesInArea( NodeId nodePos );
+
+    
+    // INodesList
     const Point & getNodeConfig( NodeId nodePos ) const final;
 
-    uint16_t getNodesAmount() const final;
+    NodeId getNodesInArea( NodeId nodePos ) const final;
 
-    NodeId getPosLastNode() const final;
-
-    uint8_t getNodesInArea( NodeId nodePos ) const final;
+    NodeId getNodesAmount() const final;
 
     bool hasNodeFreeEdge( NodeId nodePos ) const final;
 
-    uint8_t getAmountFreeEdges( NodeId nodesPos ) const final;
+    EdgeId getNodeAmountEdges( NodeId nodePos ) const final;
 
-    bool isNodeInserted( NodeId nodePos ) const final;
-
-    /* IEdgesList */
-    NodeId getNodeId( NodeId nodePos, EdgeId edgePos ) const final;
+    EdgeId getAmountFreeEdges( NodeId nodesPos ) const final;
 
 
-    
+    // IEdgesList
+    NodeId getNodePos( NodeId nodePos, EdgeId edgePos ) const final;
 
 private:
 
     struct Node
     {
-
-        config_space::Point m_config;
-
-        uint8_t m_orderConnection[ edges_limit ];
+        config_space::Point config;
 
         NodeId edges[ edges_limit ];
 
-        uint16_t m_curFreeEdge = 0;
+        EdgeId amountEdgesConnected = 0;
 
-        uint16_t m_amountEdgesConnected = 0;
-
-        uint8_t m_nodesInArea = 1;
-
-        bool m_isNodeInserted = false;
+        NodeId nodesInArea = 1;
 
         Node()
         {
-            std::fill( edges, edges + edges_limit, UINT16_MAX );
-
-            std::fill( m_orderConnection, 
-                m_orderConnection + edges_limit, UINT8_MAX );
+            std::fill( edges, edges + edges_limit, empty_node );
         }
 
-        void resetFull()
+        void reset()
         {
+            std::fill( edges, edges + amountEdgesConnected, empty_node );
 
-            std::fill( edges, edges + edges_limit, UINT16_MAX );
+            nodesInArea = 1;
 
-            std::fill( m_orderConnection, m_orderConnection + edges_limit,
-                UINT8_MAX );
-
-            m_nodesInArea = 1;
-
-            m_curFreeEdge = 0;
-
-            m_amountEdgesConnected = 0;
-
-            m_isNodeInserted = false;
-
+            amountEdgesConnected = 0;
         }
-
-        void resetNotConn()
-        {
-            m_curFreeEdge = 0;
-
-            m_isNodeInserted = false;
-        }
-
     };
 
-    Node * m_nodesStorage;
+    Node m_nodesStorage[ nodes_limit ];
 
-    uint16_t m_freeNodePos = 0;
-
-    uint16_t m_lastNodePos = 0;
-
-    uint16_t m_nodesInvolved = 0;
-
-    void updateAvailableIndex();
-    void updateLastPos( NodeId nodePos );
-
-    void verifyAvailableIndex( NodeId testingNodePos );
-    void verifyLastPos( NodeId nodePos );
-
-    void decreaseFreeEdges( uint16_t nodePos );
-
-    bool isNodeInGraph( uint16_t nodePos ) const;
-
-    void verifyFreeEdgePos( NodeId nodePos, EdgeId testingEdge );
-
-    void findFreeEdgePos( NodeId nodePos );
-
-    void resetNodeNotConn( NodeId nodePos );
+    NodeId m_nodesAmount = 0;
 
 };

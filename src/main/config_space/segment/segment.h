@@ -1,6 +1,17 @@
+/**************************************************************************************************
+Описание
+
+Определение отрезка конфигурационного пространства (две его точки, соединенные прямой)
+
+Разработчик: Сибиряков Виктор
+Заметки
+**************************************************************************************************/
+
+
 #pragma once
 
 #include "main/config_space/point/point.h"
+
 
 
 namespace motion_planner
@@ -37,7 +48,7 @@ public:
 
     void changeStartEnd( const Point & start, const Point & end );
 
-    float calcParamStep( float prec ) const;
+    float calcParamStep( float prec_Rad ) const;
 
 private:
 

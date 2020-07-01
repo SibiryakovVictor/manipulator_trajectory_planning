@@ -2,26 +2,25 @@
 
 using namespace motion_planner;
 
-
 env::ManipInitInfo env::load::getManipInitInfo()
 {
 
 	ManipInitInfo::LinkInitInfo link0Info(
-		Obb::Sizes( { 0.025000000372529, 0.029999999329448, 0.047504499554634 } ),
-		Position( -0.03999999910593, 0.10000000149012, 0.17500000596046 ),
-		Position( -0.03999999910593, 0.10000000149012, 0.17500000596046 ),
-		0,
-		2,
-		0,
-		{ -0, 0, -0 },
-		{ false, false, false },
-		false
+		Obb::Sizes( { 0.025000000372529, 0.029999999329448, 0.047504499554634 } ), /* sizes */
+		Eigen::Vector3f( -0.03999999910593, 0.10000000149012, 0.17500000596046 ), /* initCenterPos */
+		Eigen::Vector3f( -0.03999999910593, 0.10000000149012, 0.17500000596046 ), /* initMountPos */
+		0, /* mountId */
+		2, /* axisRot */
+		0, /* groupId */
+		{ -0, 0, -0 }, /* anglesOrient */
+		{ false, false, false }, /* isAngleSet */
+		false /* areAnglesUsed */
 	);
 
 	ManipInitInfo::LinkInitInfo link1Info(
 		Obb::Sizes( { 0.035000000372529, 0.0450999999329448, 0.07504499554634 } ),
-		Position( -0.100999910593, 0.10000000149012, 0.2500000596046 ),
-		Position( -0.100999910593, 0.10000000149012, 0.2500000596046 ),
+		Eigen::Vector3f( -0.100999910593, 0.10000000149012, 0.2500000596046 ),
+		Eigen::Vector3f( -0.100999910593, 0.10000000149012, 0.2500000596046 ),
 		0,
 		2,
 		0,
@@ -33,8 +32,8 @@ env::ManipInitInfo env::load::getManipInitInfo()
 
 	ManipInitInfo::LinkInitInfo link2Info(
 		Obb::Sizes( { 0.021250000223517, 0.03999999910593, 0.17742499709129 } ),
-		Position( -0.018749998882413, 0.099999971687794, 0.33743002414703 ),
-		Position( -0.018699999898672, 0.10000000149012, 0.19000000655651 ),
+		Eigen::Vector3f( -0.018749998882413, 0.099999971687794, 0.33743002414703 ),
+		Eigen::Vector3f( -0.018699999898672, 0.10000000149012, 0.19000000655651 ),
 		0,
 		0,
 		1,
@@ -46,8 +45,8 @@ env::ManipInitInfo env::load::getManipInitInfo()
 
 	ManipInitInfo::LinkInitInfo link3Info(
 		Obb::Sizes( { 0.039250001311302, 0.03999999910593, 0.03999999910593 } ),
-		Position( -0.00074999779462814, 0.099999971687794, 0.51494998464584 ),
-		Position( -0.00070000067353249, 0.10000000149012, 0.5148000061512 ),
+		Eigen::Vector3f( -0.00074999779462814, 0.099999971687794, 0.51494998464584 ),
+		Eigen::Vector3f( -0.00070000067353249, 0.10000000149012, 0.5148000061512 ),
 		2,
 		0,
 		1,
@@ -59,8 +58,8 @@ env::ManipInitInfo env::load::getManipInitInfo()
 
 	ManipInitInfo::LinkInitInfo link4Info(
 		Obb::Sizes( { 0.019999999552965, 0.019999999552965, 0.15060000121593 } ),
-		Position( 0.015500001609325, 0.10000000149012, 0.69173994064331 ),
-		Position( 0.015500001609325, 0.10000000149012, 0.53989995250702 ),
+		Eigen::Vector3f( 0.015500001609325, 0.10000000149012, 0.69173994064331 ),
+		Eigen::Vector3f( 0.015500001609325, 0.10000000149012, 0.53989995250702 ),
 		2,
 		0,
 		2,
@@ -72,8 +71,8 @@ env::ManipInitInfo env::load::getManipInitInfo()
 
 	ManipInitInfo::LinkInitInfo link5Info(
 		Obb::Sizes( { 0.025800000876188, 0.049258501023054, 0.03397149965167 } ),
-		Position( -0.029999999329448, 0.075799986994267, 0.85614000988007 ),
-		Position( -0.0044999979436398, 0.099999971687794, 0.84329996204376 ),
+		Eigen::Vector3f( -0.029999999329448, 0.075799986994267, 0.85614000988007 ),
+		Eigen::Vector3f( -0.0044999979436398, 0.099999971687794, 0.84329996204376 ),
 		4,
 		0,
 		3,
@@ -85,8 +84,8 @@ env::ManipInitInfo env::load::getManipInitInfo()
 
 	ManipInitInfo::LinkInitInfo link6Info(
 		Obb::Sizes( { 0.031250000876188, 0.010058501023054, 0.01250049965167 } ),
-		Position( -0.0305000999329448, 0.135109986994267, 0.82840000988007 ),
-		Position( -0.0305000999329448, 0.135109986994267, 0.82840000988007 ),
+		Eigen::Vector3f( -0.0305000999329448, 0.135109986994267, 0.82840000988007 ),
+		Eigen::Vector3f( -0.0305000999329448, 0.135109986994267, 0.82840000988007 ),
 		5,
 		1,
 		4,
@@ -98,8 +97,8 @@ env::ManipInitInfo env::load::getManipInitInfo()
 
 	ManipInitInfo::LinkInitInfo link7Info(
 		Obb::Sizes( { 0.0062500000931323, 0.02250099927187, 0.0062500000931323 } ),
-		Position( -0.013000000268221, 0.1559999812603, 0.82846993932724 ),
-		Position( -0.012999993748963, 0.13519997189045, 0.82849980125427 ),
+		Eigen::Vector3f( -0.013000000268221, 0.1559999812603, 0.82846993932724 ),
+		Eigen::Vector3f( -0.012999993748963, 0.13519997189045, 0.82849980125427 ),
 		6,
 		2,
 		5,
@@ -111,8 +110,8 @@ env::ManipInitInfo env::load::getManipInitInfo()
 
 	ManipInitInfo::LinkInitInfo link8Info(
 		Obb::Sizes( { 0.0062500000931323, 0.022500002756715, 0.0062500000931323 } ),
-		Position( -0.0031999973580241, 0.19557001481056, 0.8284994436264 ),
-		Position( -0.0029000013601035, 0.17509999165535, 0.82849968204498 ),
+		Eigen::Vector3f( -0.0031999973580241, 0.19557001481056, 0.8284994436264 ),
+		Eigen::Vector3f( -0.0029000013601035, 0.17509999165535, 0.82849968204498 ),
 		7,
 		2,
 		5,
@@ -124,8 +123,8 @@ env::ManipInitInfo env::load::getManipInitInfo()
 
 	ManipInitInfo::LinkInitInfo link9Info(
 		Obb::Sizes( { 0.0062501044012606, 0.02250050008297, 0.0062501044012606 } ),
-		Position( -0.048372000455856, 0.15599999616146, 0.8284698797226 ),
-		Position( -0.048372000455856, 0.13510001659393, 0.82849986085892 ),
+		Eigen::Vector3f( -0.048372000455856, 0.15599999616146, 0.8284698797226 ),
+		Eigen::Vector3f( -0.048372000455856, 0.13510001659393, 0.82849986085892 ),
 		6,
 		2,
 		6,
@@ -137,8 +136,8 @@ env::ManipInitInfo env::load::getManipInitInfo()
 
 	ManipInitInfo::LinkInitInfo link10Info(
 		Obb::Sizes( { 0.0062500000931323, 0.02250000089407, 0.0062500000931323 } ),
-		Position( -0.05816999822855, 0.1954699999094, 0.82846993932724 ),
-		Position( -0.05816999822855, 0.17500000655651, 0.82849998006821 ),
+		Eigen::Vector3f( -0.05816999822855, 0.1954699999094, 0.82846993932724 ),
+		Eigen::Vector3f( -0.05816999822855, 0.17500000655651, 0.82849998006821 ),
 		9,
 		2,
 		6,
@@ -161,9 +160,9 @@ env::ObstInitInfo env::load::getObstInitInfo()
 {
 
 	Obb::Sizes obst0Sizes( Obb::Sizes( { 0.075000002980232, 0.075000002980232, 0.037500001490116 } ) );
-	Position obst0Pos( Position( -0.035000000149012, -0.049999997019768, 0.16500000059605 ) );
-	Position obst0Mount( Position( -0.035000000149012, -0.049999997019768, 0.16500000059605 ) );
-	Orient obst0Orient;
+	Eigen::Vector3f obst0Pos( Eigen::Vector3f( -0.035000000149012, -0.049999997019768, 0.16500000059605 ) );
+	Eigen::Vector3f obst0Mount( Eigen::Vector3f( -0.035000000149012, -0.049999997019768, 0.16500000059605 ) );
+	Eigen::Matrix3f obst0Orient;
 	obst0Orient <<
 		1, 0, 0,
 		0, 1, 0,
@@ -171,9 +170,9 @@ env::ObstInitInfo env::load::getObstInitInfo()
 
 
 	Obb::Sizes obst1Sizes( Obb::Sizes( { 0.125, 0.1925999403954, 0.050000000745058 } ) );
-	Position obst1Pos( Position( -0.035000000149012, 0.0099999997764826, 0.076099999046326 ) );
-	Position obst1Mount( Position( -0.035000000149012, 0.0099999997764826, 0.076099999046326 ) );
-	Orient obst1Orient;
+	Eigen::Vector3f obst1Pos( Eigen::Vector3f( -0.035000000149012, 0.0099999997764826, 0.076099999046326 ) );
+	Eigen::Vector3f obst1Mount( Eigen::Vector3f( -0.035000000149012, 0.0099999997764826, 0.076099999046326 ) );
+	Eigen::Matrix3f obst1Orient;
 	obst1Orient <<
 		1, 0, 0,
 		0, 1, 0,
@@ -181,9 +180,9 @@ env::ObstInitInfo env::load::getObstInitInfo()
 
 
 	Obb::Sizes obst2Sizes( Obb::Sizes( { 1, 1, 0.050000000745058 } ) );
-	Position obst2Pos( Position( 0, 0, -0.027000001072884 ) );
-	Position obst2Mount( Position( 0, 0, -0.027000001072884 ) );
-	Orient obst2Orient;
+	Eigen::Vector3f obst2Pos( Eigen::Vector3f( 0, 0, -0.027000001072884 ) );
+	Eigen::Vector3f obst2Mount( Eigen::Vector3f( 0, 0, -0.027000001072884 ) );
+	Eigen::Matrix3f obst2Orient;
 	obst2Orient <<
 		1, 0, 0,
 		0, 1, 0,
@@ -191,9 +190,9 @@ env::ObstInitInfo env::load::getObstInitInfo()
 
 
 	Obb::Sizes obst3Sizes( Obb::Sizes( { 0.025000000372529, 0.0625, 0.125 } ) );
-	Position obst3Pos( Position( -0.18600000441074, 0.17499999701977, 0.1500000607967 ) );
-	Position obst3Mount( Position( -0.1600000441074, 0.17499999701977, 0.0850000607967 ) );
-	Orient obst3Orient;
+	Eigen::Vector3f obst3Pos( Eigen::Vector3f( -0.18600000441074, 0.17499999701977, 0.1500000607967 ) );
+	Eigen::Vector3f obst3Mount( Eigen::Vector3f( -0.1600000441074, 0.17499999701977, 0.0850000607967 ) );
+	Eigen::Matrix3f obst3Orient;
 	obst3Orient <<
 		1, 0, 0,
 		0, 1, 0,
@@ -201,9 +200,9 @@ env::ObstInitInfo env::load::getObstInitInfo()
 
 
 	Obb::Sizes obst4Sizes( Obb::Sizes( { 0.025000000372529, 0.0625, 0.125 } ) );
-	Position obst4Pos( Position( 0.11500000208616, 0.17499999701977, 0.15000000607967 ) );
-	Position obst4Mount( Position( 0.0900000208616, 0.17499999701977, 0.08500000607967 ) );
-	Orient obst4Orient;
+	Eigen::Vector3f obst4Pos( Eigen::Vector3f( 0.11500000208616, 0.17499999701977, 0.15000000607967 ) );
+	Eigen::Vector3f obst4Mount( Eigen::Vector3f( 0.0900000208616, 0.17499999701977, 0.08500000607967 ) );
+	Eigen::Matrix3f obst4Orient;
 	obst4Orient <<
 		1, 0, 0,
 		0, 1, 0,
@@ -211,9 +210,9 @@ env::ObstInitInfo env::load::getObstInitInfo()
 
 
 	Obb::Sizes obst5Sizes( Obb::Sizes( { 0.025000000372529, 0.0625, 0.125 } ) );
-	Position obst5Pos( Position( -0.18600000441074, -0.14499999582767, 0.15000000607967 ) );
-	Position obst5Mount( Position( -0.1600000441074, -0.16009999582767, 0.085000000607967 ) );
-	Orient obst5Orient;
+	Eigen::Vector3f obst5Pos( Eigen::Vector3f( -0.18600000441074, -0.14499999582767, 0.15000000607967 ) );
+	Eigen::Vector3f obst5Mount( Eigen::Vector3f( -0.1600000441074, -0.16009999582767, 0.085000000607967 ) );
+	Eigen::Matrix3f obst5Orient;
 	obst5Orient <<
 		1, 0, 0,
 		0, 1, 0,
@@ -221,9 +220,9 @@ env::ObstInitInfo env::load::getObstInitInfo()
 
 
 	Obb::Sizes obst6Sizes( Obb::Sizes( { 0.025000000372529, 0.0625, 0.125 } ) );
-	Position obst6Pos( Position( 0.11500000208616, -0.15999999642372, 0.15000000607967 ) );
-	Position obst6Mount( Position( 0.09000000208616, -0.15999999642372, 0.08500000607967 ) );
-	Orient obst6Orient;
+	Eigen::Vector3f obst6Pos( Eigen::Vector3f( 0.11500000208616, -0.15999999642372, 0.15000000607967 ) );
+	Eigen::Vector3f obst6Mount( Eigen::Vector3f( 0.09000000208616, -0.15999999642372, 0.08500000607967 ) );
+	Eigen::Matrix3f obst6Orient;
 	obst6Orient <<
 		1, 0, 0,
 		0, 1, 0,
@@ -241,3 +240,4 @@ env::ObstInitInfo env::load::getObstInitInfo()
 		} );
 
 }
+

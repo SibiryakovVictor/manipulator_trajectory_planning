@@ -1,6 +1,20 @@
+/**************************************************************************************************
+Описание
+
+Расширение класса Obb с возможностью вращения тела относительно точки, через которую будет
+проходить ось вращения тела
+
+Разработчик: Сибиряков Виктор
+Заметки
+* комментарий к методу rotateAroundAnchor (в attached_detail.cpp)
+**************************************************************************************************/
+
+
+
 #pragma once
 
 #include "main/env/primitives/obb/obb.h"
+
 
 
 namespace motion_planner
@@ -17,28 +31,27 @@ class motion_planner::env::AttachedDetail : public motion_planner::env::Obb
 
 public:
 
-    void rotateAroundAnchor( float angle, const Eigen::Vector3f & rotAxis );
-    void rotateAroundAnchor( float angle, Eigen::Vector3f && rotAxis );
+    void rotateAroundAnchor( float angle_Rad, const Eigen::Vector3f & rotAxis );
+    void rotateAroundAnchor( float angle_Rad, Eigen::Vector3f && rotAxis );
 
-    void resetPosition();
+    void resetOrient();
 
     explicit AttachedDetail()
     {}
 
-    explicit AttachedDetail( const Obb & obbObj );
-    explicit AttachedDetail( Obb && obbObj );
+    explicit AttachedDetail( const Obb & Obb );
+    explicit AttachedDetail( Obb && Obb );
 
-    explicit AttachedDetail( const Obb & obbObj, const Position & mountPos );
-    explicit AttachedDetail( Obb && obbObj, Position && mountPos );
+    explicit AttachedDetail( const Obb & Obb, const Eigen::Vector3f & mountPos );
+    explicit AttachedDetail( Obb && Obb, Eigen::Vector3f && mountPos );
 
-    AttachedDetail & operator=( const Obb & obbObj );
+    AttachedDetail & operator=( const Obb & Obb );
 
 private:
 
-    Position m_mountPos = Obb::getCenterPos();
+    Eigen::Vector3f m_mountPos = Obb::getCenterPos();
 
-    Position m_initCenterPos = Obb::getCenterPos();
+    Eigen::Vector3f m_initCenterPos = Obb::getCenterPos();
 
 };
-
 

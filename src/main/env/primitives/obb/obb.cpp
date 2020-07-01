@@ -1,3 +1,15 @@
+/**************************************************************************************************
+Описание
+
+Реализация Oriented Bounding Box
+
+Разработчик: Сибиряков Виктор
+Заметки
+* метод getMaxSize используется для формирования сферы нужного радиуса для грубой проверки
+на наличие пересечений между двумя OBB
+**************************************************************************************************/
+
+
 #include "obb.h"
 
 
@@ -5,15 +17,14 @@ using namespace motion_planner::env;
 
 
 
-
-const Orient & Obb::getOrient() const
+const Eigen::Matrix3f & Obb::getOrient() const
 {
     return m_orient;
 }
 
 
 
-const Position & Obb::getCenterPos() const
+const Eigen::Vector3f & Obb::getCenterPos() const
 {
     return m_centerPos;
 }
@@ -36,22 +47,22 @@ float Obb::getMaxSize() const
 
 
 
-void Obb::setOrient( const Orient & orient )
+void Obb::setOrient( const Eigen::Matrix3f & orient )
 {
     m_orient = orient;
 }
-void Obb::setOrient( Orient && orient )
+void Obb::setOrient( Eigen::Matrix3f && orient )
 {
     m_orient = orient;
 }
 
 
 
-void Obb::setCenterPos( const Position & pos )
+void Obb::setCenterPos( const Eigen::Vector3f & pos )
 {
     m_centerPos = pos;
 }
-void Obb::setCenterPos( Position && pos )
+void Obb::setCenterPos( Eigen::Vector3f && pos )
 {
     m_centerPos = pos;
 }
@@ -82,7 +93,7 @@ float Obb::calcMaxSize( const float (&sizesList)[ 3 ] ) const
 
 
 
-Obb::Obb( const Obb::Sizes & sizes, const Position & centerPos ) :
+Obb::Obb( const Obb::Sizes & sizes, const Eigen::Vector3f & centerPos ) :
     m_sizes( sizes ),
     m_centerPos( centerPos),
     m_maxSize( calcMaxSize( sizes.dims ) )
@@ -90,7 +101,7 @@ Obb::Obb( const Obb::Sizes & sizes, const Position & centerPos ) :
 
 
 
-Obb::Obb( Obb::Sizes && sizes, Position && centerPos ) :
+Obb::Obb( Obb::Sizes && sizes, Eigen::Vector3f && centerPos ) :
     m_sizes( sizes ),
     m_centerPos( centerPos ),
     m_maxSize( calcMaxSize( sizes.dims ) )
@@ -98,8 +109,8 @@ Obb::Obb( Obb::Sizes && sizes, Position && centerPos ) :
 
 
 
-Obb::Obb( const Obb::Sizes & sizes, const Position & centerPos, 
-    const Orient & orient ) :
+Obb::Obb( const Obb::Sizes & sizes, const Eigen::Vector3f & centerPos, 
+    const Eigen::Matrix3f & orient ) :
     m_sizes( sizes ),
     m_centerPos( centerPos ),
     m_orient( orient ),
@@ -108,7 +119,7 @@ Obb::Obb( const Obb::Sizes & sizes, const Position & centerPos,
 
 
 
-Obb::Obb( Obb::Sizes && sizes, Position && centerPos, Orient && orient ) :
+Obb::Obb( Obb::Sizes && sizes, Eigen::Vector3f && centerPos, Eigen::Matrix3f && orient ) :
     m_sizes( sizes ),
     m_centerPos( centerPos ),
     m_orient( orient ),
@@ -157,4 +168,3 @@ Obb & Obb::operator=( const Obb & Obb )
 
     return *this;
 }
-

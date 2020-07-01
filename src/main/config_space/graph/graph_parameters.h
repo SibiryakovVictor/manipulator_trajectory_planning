@@ -1,8 +1,18 @@
+/**************************************************************************************************
+Описание
+
+Параметры класса config_space::graph::Graph
+
+Разработчик: Сибиряков Виктор
+Заметки
+* комментарии к константам прилагаются
+**************************************************************************************************/
+
+
 #pragma once
 
-#include <cinttypes>
+#include "graph_typedefs.h"
 
-#include "main/config_space/conf_space_dims.h"
 
 
 
@@ -12,15 +22,25 @@ namespace motion_planner
     {
         namespace graph
         {
-            const uint16_t start_node_pos = 0;
-            const uint16_t goal_node_pos = 1;
+            // максимальное число рёбер у вершины
+            // !!! ВАЖНО !!!: при изменении числа проверить тип EdgeId в "graph_typedefs.h"
+            // чтобы убедиться, что заданный лимит влезает в тип
+            const EdgeId edges_limit = 4;
 
-            const uint16_t start_comp = start_node_pos;
-            const uint16_t goal_comp = goal_node_pos;
+            // максимальное число вершин в графе
+            // !!! ВАЖНО !!!: при изменении числа проверить тип NodeId в "graph_typedefs.h",
+            // чтобы убедиться, что заданный лимит влезает в тип
+            const NodeId nodes_limit = 200;
 
-            const uint16_t edges_limit = 4;
+            // позиции вершин в массиве (m_nodesStorage) класса Graph, которые соответствуют
+            // стартовой и целевой конфигурации
+            const NodeId start_node_pos = 0;
+            const NodeId goal_node_pos = 1;
 
-            const uint16_t capacity = 200;
+            // компоненты стартовой и целевой конфигураций (для класса Est, лучше оставлять равным
+            // позициям стартовой и целевой конфигураций)
+            const NodeId start_comp = start_node_pos;
+            const NodeId goal_comp = goal_node_pos;
         }
     }
 }

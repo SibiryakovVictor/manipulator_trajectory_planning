@@ -340,7 +340,7 @@
               <MiscControls></MiscControls>
               <Define>UMBA_DONT_USE_RETARGET, USE_FULL_ASSERT, USE_STDPERIPH_DRIVER,  __FPU_PRESENT, __STDC_LIMIT_MACROS, USE_HSE, STM32F407xx, STM32F40_41xxx, HSE_VALUE=8000000, EIGEN_NO_DEBUG,EIGEN_DONT_ALIGN,EIGEN_NO_MALLOC</Define>
               <Undefine></Undefine>
-              <IncludePath>.\src;.\src\mcu_support_package\inc;.\src\spl\inc;.\src\spl;.\src\cmsis; E:\Programs\vcpkg\installed\x64-windows\include</IncludePath>
+              <IncludePath>.\src;.\src\mcu_support_package\inc;.\src\spl\inc;.\src\spl;.\src\cmsis</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -484,11 +484,6 @@
               <FilePath>.\src\main\config_space\graph\graph_parameters.h</FilePath>
             </File>
             <File>
-              <FileName>typedefs.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\src\main\config_space\graph\typedefs.h</FilePath>
-            </File>
-            <File>
               <FileName>conf_space_dims.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\src\main\config_space\conf_space_dims.h</FilePath>
@@ -534,34 +529,14 @@
               <FilePath>.\src\main\tools\float_operations\float_operations.h</FilePath>
             </File>
             <File>
-              <FileName>i_shortest_path_finder.h</FileName>
+              <FileName>path_typedefs.h</FileName>
               <FileType>5</FileType>
-              <FilePath>.\src\main\config_space\graph\shortest_path_finder\i_shortest_path_finder.h</FilePath>
-            </File>
-            <File>
-              <FileName>path_def.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\src\main\path\path_def.h</FilePath>
+              <FilePath>.\src\main\path\path_typedefs.h</FilePath>
             </File>
             <File>
               <FileName>path_parameters.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\src\main\path\path_parameters.h</FilePath>
-            </File>
-            <File>
-              <FileName>a_star.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\src\main\config_space\graph\shortest_path_finder\a_star\a_star.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>a_star.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\src\main\config_space\graph\shortest_path_finder\a_star\a_star.h</FilePath>
-            </File>
-            <File>
-              <FileName>priority_queue.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\src\main\config_space\graph\shortest_path_finder\a_star\priority_queue.cpp</FilePath>
             </File>
             <File>
               <FileName>intervals.cpp</FileName>
@@ -574,16 +549,6 @@
               <FilePath>.\src\main\tools\intervals\intervals.h</FilePath>
             </File>
             <File>
-              <FileName>free_cspace_verifier.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\src\main\config_space\free_cspace_verifier\free_cspace_verifier.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>free_cspace_verifier.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\src\main\config_space\free_cspace_verifier\free_cspace_verifier.h</FilePath>
-            </File>
-            <File>
               <FileName>segment.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>.\src\main\config_space\segment\segment.cpp</FilePath>
@@ -594,14 +559,14 @@
               <FilePath>.\src\main\config_space\segment\segment.h</FilePath>
             </File>
             <File>
-              <FileName>manipulator.cpp</FileName>
+              <FileName>manipulator_controller.cpp</FileName>
               <FileType>8</FileType>
-              <FilePath>.\src\main\env\manipulator\manipulator.cpp</FilePath>
+              <FilePath>.\src\main\env\manipulator\manipulator_controller.cpp</FilePath>
             </File>
             <File>
-              <FileName>manipulator.h</FileName>
+              <FileName>manipulator_controller.h</FileName>
               <FileType>5</FileType>
-              <FilePath>.\src\main\env\manipulator\manipulator.h</FilePath>
+              <FilePath>.\src\main\env\manipulator\manipulator_controller.h</FilePath>
             </File>
             <File>
               <FileName>manip_parameters.h</FileName>
@@ -679,24 +644,24 @@
               <FilePath>.\src\main\path\trajectory_iterator\trajectory_iterator.h</FilePath>
             </File>
             <File>
-              <FileName>path_traversal.cpp</FileName>
+              <FileName>path_generator.cpp</FileName>
               <FileType>8</FileType>
-              <FilePath>.\src\main\path\path_traversal\path_traversal.cpp</FilePath>
+              <FilePath>.\src\main\path\path_generator\path_generator.cpp</FilePath>
             </File>
             <File>
-              <FileName>path_traversal.h</FileName>
+              <FileName>path_generator.h</FileName>
               <FileType>5</FileType>
-              <FilePath>.\src\main\path\path_traversal\path_traversal.h</FilePath>
+              <FilePath>.\src\main\path\path_generator\path_generator.h</FilePath>
             </File>
             <File>
-              <FileName>path_finder.cpp</FileName>
+              <FileName>path_searcher.cpp</FileName>
               <FileType>8</FileType>
-              <FilePath>.\src\main\path\path_finder\path_finder.cpp</FilePath>
+              <FilePath>.\src\main\path\path_searcher\path_searcher.cpp</FilePath>
             </File>
             <File>
-              <FileName>path_finder.h</FileName>
+              <FileName>path_searcher.h</FileName>
               <FileType>5</FileType>
-              <FilePath>.\src\main\path\path_finder\path_finder.h</FilePath>
+              <FilePath>.\src\main\path\path_searcher\path_searcher.h</FilePath>
             </File>
             <File>
               <FileName>est.cpp</FileName>
@@ -729,14 +694,14 @@
               <FilePath>.\src\main\motion_planner\motion_planner.h</FilePath>
             </File>
             <File>
-              <FileName>config_manager.cpp</FileName>
+              <FileName>configurator.cpp</FileName>
               <FileType>8</FileType>
-              <FilePath>.\src\main\tools\config_manager\config_manager.cpp</FilePath>
+              <FilePath>.\src\main\tools\configurator\configurator.cpp</FilePath>
             </File>
             <File>
-              <FileName>config_manager.h</FileName>
+              <FileName>configurator.h</FileName>
               <FileType>5</FileType>
-              <FilePath>.\src\main\tools\config_manager\config_manager.h</FilePath>
+              <FilePath>.\src\main\tools\configurator\configurator.h</FilePath>
             </File>
             <File>
               <FileName>info_loader.cpp</FileName>
@@ -767,6 +732,46 @@
               <FileName>collision_table.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\src\main\env\collision_detection\collision_table.h</FilePath>
+            </File>
+            <File>
+              <FileName>env_def.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\main\env\env_def.h</FilePath>
+            </File>
+            <File>
+              <FileName>free_cspace_validator.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\main\config_space\free_cspace_validator\free_cspace_validator.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>free_cspace_validator.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\main\config_space\free_cspace_validator\free_cspace_validator.h</FilePath>
+            </File>
+            <File>
+              <FileName>graph_typedefs.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\main\config_space\graph\graph_typedefs.h</FilePath>
+            </File>
+            <File>
+              <FileName>i_shortest_path_searcher.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\main\config_space\graph\shortest_path_searcher\i_shortest_path_searcher.h</FilePath>
+            </File>
+            <File>
+              <FileName>a_star.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\main\config_space\graph\shortest_path_searcher\a_star\a_star.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>a_star.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\main\config_space\graph\shortest_path_searcher\a_star\a_star.h</FilePath>
+            </File>
+            <File>
+              <FileName>priority_queue.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\main\config_space\graph\shortest_path_searcher\a_star\priority_queue.cpp</FilePath>
             </File>
           </Files>
         </Group>

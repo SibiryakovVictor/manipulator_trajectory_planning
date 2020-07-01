@@ -1,11 +1,23 @@
+/**************************************************************************************************
+Описание
+
+Определение точки конфигурационного пространства
+
+Разработчик: Сибиряков Виктор
+Заметки
+* определение расстояния между точками - методы calcDist и calcDistNoSqrt
+* определение равенства точек - operator==
+**************************************************************************************************/
+
+
+
 #pragma once
 
+#include <cinttypes>
 #include <algorithm>
 #include <numeric>
 
 #include "main/config_space/conf_space_dims.h"
-
-
 
 namespace motion_planner
 {
@@ -14,11 +26,6 @@ namespace motion_planner
 		struct PointData;
 
 		class Point;		
-
-		namespace point
-		{
-			void cvtDegsToRads( Point & p );
-		}
 	}
 }
 
@@ -26,32 +33,32 @@ namespace motion_planner
 
 struct motion_planner::config_space::PointData
 {
-	float dimensionValues[ conf_space_dims ];
+	float dimVals[ conf_space_dims ];
 
 
 	PointData()
 	{
-		std::fill( dimensionValues, dimensionValues + conf_space_dims, 0.f );
+		std::fill( dimVals, dimVals + conf_space_dims, 0.f );
 	}
 
 
 	PointData( float value )
 	{
-		std::fill( dimensionValues, dimensionValues + conf_space_dims, value );
+		std::fill( dimVals, dimVals + conf_space_dims, value );
 	}
 
 
 	PointData( const float (&dimValues)[ conf_space_dims ] )
 	{
 		std::copy( dimValues, dimValues + conf_space_dims,
-			dimensionValues );
+			dimVals );
 	}
 
 
 	PointData( const PointData & pData )
 	{
-		std::copy( pData.dimensionValues, pData.dimensionValues + conf_space_dims,
-			dimensionValues );
+		std::copy( pData.dimVals, pData.dimVals + conf_space_dims,
+			dimVals );
 	}
 
 
@@ -62,13 +69,15 @@ struct motion_planner::config_space::PointData
 			return *this;
 		}
 
-		std::copy( pData.dimensionValues, pData.dimensionValues + conf_space_dims,
-			dimensionValues );
+		std::copy( pData.dimVals, pData.dimVals + conf_space_dims,
+			dimVals );
 
 		return *this;
 	}
 
 };
+
+
 
 class motion_planner::config_space::Point
 {
@@ -117,35 +126,35 @@ public:
 
 	float * begin()
 	{
-		return m_pointData.dimensionValues;
+		return m_pointData.dimVals;
 	}
 
 	float * end()
 	{
-		return m_pointData.dimensionValues + conf_space_dims;
+		return m_pointData.dimVals + conf_space_dims;
 	}
 
 	float const * begin() const
 	{
-		return m_pointData.dimensionValues;
+		return m_pointData.dimVals;
 	}
 
 	float const * end() const
 	{
-		return m_pointData.dimensionValues + conf_space_dims;
+		return m_pointData.dimVals + conf_space_dims;
 	}
 
 	float & operator[]( uint16_t index )
 	{
-		return m_pointData.dimensionValues[ index ];
+		return m_pointData.dimVals[ index ];
 	}
 
 	float operator[]( uint16_t index ) const
 	{
-		return m_pointData.dimensionValues[ index ];
+		return m_pointData.dimVals[ index ];
 	}
 
-	void alignToGrid( const float gridSize );
+	void cvtDegsToRads();
 
 	static float calcDistance( const Point & p1, const Point & p2 );
 
@@ -157,4 +166,3 @@ private:
 
 	PointData m_pointData;
 };
-
