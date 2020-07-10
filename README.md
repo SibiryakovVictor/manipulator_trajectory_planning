@@ -60,6 +60,8 @@ src/main
 
 https://www.coppeliarobotics.com/downloads
 
+#### Положить файл env_info_code_data.lua в папку lua, находящуюся в корне директории робосимулятора
+
 #### Запустить робосимулятор
 
 - открыть сцену **env_info_generator.ttt**, лежащую в корне репозитория
