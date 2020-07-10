@@ -49,7 +49,7 @@ namespace motion_planner
         inline float calcMaxDimValue_Rad( float prec_Degree )
         {
             return std::sqrtf( 
-                std::powf( flt_op::cvtDegToRad( prec_Degree ), 2.f ) / conf_space_dims );
+                std::powf( flt_op::cvtDegToRad( prec_Degree ), 2.f ) / static_cast< float >( conf_space_dims ) );
         }
     }
 }

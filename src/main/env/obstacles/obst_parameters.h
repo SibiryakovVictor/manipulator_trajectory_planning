@@ -18,7 +18,7 @@ namespace motion_planner
 {
     namespace obst
     {
-        const int obst_amount = 7;
+        const int obst_amount = 6;
     }
 }
 

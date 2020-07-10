@@ -59,6 +59,8 @@ namespace motion_planner
                 uint16_t groupId = 0;
 
                 uint16_t mountId = 0;
+                
+                uint16_t lastAlign = 0;
 
                 EulerAngles anglesOrient = EulerAngles( { 0.f, 0.f, 0.f } );
                 bool isAngleSet[3] = { false, false, false };
@@ -69,6 +71,7 @@ namespace motion_planner
                     Eigen::Vector3f centerPos_,
                     Eigen::Vector3f mountPos_,
                     uint16_t mountId_,
+                    uint16_t lastAlign_,
                     uint8_t axis_,
                     uint16_t id_,
                     const float (&angles_)[ 3 ],
@@ -78,6 +81,7 @@ namespace motion_planner
                     body( sizes_, centerPos_ ),
                     initMountPos( mountPos_ ),
                     mountId( mountId_ ),
+                    lastAlign( lastAlign_ ),
                     axisRot( axis_ ),
                     groupId( id_ ),
                     areAnglesUsed( areAnglesUsed_ ),

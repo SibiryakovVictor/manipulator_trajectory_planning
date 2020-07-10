@@ -77,13 +77,13 @@ bool FreeCSpaceValidator::isSegmentCollided_Points( const Segment & segment, uin
 
 
 
-bool FreeCSpaceValidator::isSegmentCollided_Precision( const Segment & segment, float prec )
+bool FreeCSpaceValidator::isSegmentCollided_Precision( const Segment & segment, const float prec )
 {
-    static const auto param_border_value = 1.f;
+    static const auto ref_border_param = 1.f;
 
-    auto step = prec;
+    float step = prec;
 
-    while ( step < param_border_value )
+    while ( step < ref_border_param )
     {
         auto point( segment.getPoint( step ) );
 

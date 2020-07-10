@@ -81,7 +81,7 @@ private:
     bool checkSegmentRoughPhase( const config_space::Segment & segment );
 
 
-    bool isSegmentCollided_Precision( const config_space::Segment & segment, float prec );
+    bool isSegmentCollided_Precision( const config_space::Segment & segment, const float prec );
     bool isSegmentCollided_Points( const config_space::Segment & segment, uint16_t pointsCheck );
 
 

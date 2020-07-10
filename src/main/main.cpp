@@ -10,9 +10,9 @@ int main(void)
 {
     using namespace motion_planner;
     
-	// задание шага траектории в радианах и создание планировщика
-	float stepRad = flt_op::cvtDegToRad( 1.f );
-	MotionPlanner planner( stepRad );
+	// задание шага траектории в градусах и создание планировщика
+	float stepDegree = 1.f;
+	MotionPlanner planner( stepDegree );
 	
 	// задание стартовой и целевой конфигураций 
 	config_space::Point startConfig( { -0.14404736472671, 1.553343034275, -0.25598925748466,

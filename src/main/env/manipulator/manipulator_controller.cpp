@@ -41,7 +41,7 @@ void ManipulatorController::setConfigCurrentLink( const float & config )
 	if ( m_linkId )
 	{
 		alignMountCenterPos( config,
-			m_linkId, m_linkId + 1, manip::links_align_last[ m_linkId ] );
+			m_linkId, m_linkId + 1, m_initLinksInfo[ m_linkId ].lastAlign );
 	}
 	else
 	{
@@ -115,7 +115,7 @@ void ManipulatorController::alignMountCenterPos( float angle, uint16_t refLinkId
 			m_initLinksInfo[ refLinkId ].axisRot ) );
 
 
-	for ( uint8_t alignLink = startAlignPos; alignLink != endAlignPos; alignLink++ )
+	for ( uint8_t alignLink = startAlignPos; alignLink < endAlignPos; alignLink++ )
 	{
 		m_mountPos[ alignLink ] = m_mountPos[ refLinkId ] +
 			( rotMat * ( m_mountPos[ alignLink ] - m_mountPos[ refLinkId ] ) );
@@ -133,7 +133,7 @@ void ManipulatorController::initMountCenterPos( float angle )
 	Eigen::Matrix3f && rotMat = getRotMat( -angle,
 		m_links[ 0 ].getOrient().row( m_initLinksInfo[ 0 ].axisRot ) );
 
-	for ( uint8_t alignLink = 1; alignLink != manip::links_amount; alignLink++ )
+	for ( uint8_t alignLink = 1; alignLink < manip::links_amount; alignLink++ )
 	{
 		m_mountPos[ alignLink ] = m_mountPos[ 0 ] +
 			( rotMat * ( m_initLinksInfo[ alignLink ].initMountPos - m_mountPos[ 0 ] ) );

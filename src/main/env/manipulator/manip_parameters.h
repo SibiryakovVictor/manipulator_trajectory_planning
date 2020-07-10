@@ -54,11 +54,5 @@ namespace motion_planner
         // возвращаемых функцией getManipInitInfo (env/info_loader.cpp)
         const uint8_t links_complex_amount = 4;
 
-
-        // для каждой позиции звена в массиве должно возвращать позицию последнего звена, ориентация
-        // в пространстве которого меняется при изменении ориентации звена на этой позиции
-        const uint8_t links_align_last[ links_amount ] = { 
-            links_amount, links_amount, links_amount, links_amount, links_amount,
-            links_amount, links_amount, 9, 9, links_amount, links_amount };
     }
 }

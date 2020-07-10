@@ -14,17 +14,22 @@
 
 #include "init_typedefs.h"
 
-
 namespace motion_planner
 {
-    namespace env
-    {
-        namespace load
-        {
-            ManipInitInfo getManipInitInfo();
+	namespace env
+	{
+		namespace load
+		{
+			ManipInitInfo getManipInitInfo();
 
-            ObstInitInfo getObstInitInfo();
-        }
-    }
+			ObstInitInfo getObstInitInfo();
+
+			
+			Obb getOtherBody1_link1();
+
+			Obb getOtherBody2_link1();
+
+		}
+	}
 }
 
