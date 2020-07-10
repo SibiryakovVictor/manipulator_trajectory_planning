@@ -15,13 +15,13 @@ src/main
 - Порядок занесения: от корня манипулятора и дальше в порядке присоединения звеньев друг к другу
 - Пример заполнения структуры:
 
-![Image alt](https://github.com/SibiryakovVictor/training_release_rep/raw/master/images/link_init_info_example.jpg)
+![Image alt](https://github.com/SibiryakovVictor/manipulator_trajectory_planning/raw/master/images/link_init_info_example.jpg)
 
 #### Добавить все заполненные структуры в оператор возврата return функции getManipInitInfo (env/info_loader/info_loader.cpp)
 
 Пример:
 
-![Image alt](https://github.com/SibiryakovVictor/training_release_rep/raw/master/images/getManipInitInfo_return_example.png)
+![Image alt](https://github.com/SibiryakovVictor/manipulator_trajectory_planning/raw/master/images/getManipInitInfo_return_example.png)
 
 #### Уточнить параметры добавляемого манипулятора в env/manipulator/manip_parameters.h и config_space/conf_space_dims.h
 
@@ -29,7 +29,7 @@ src/main
 
 Пример
 
-![Image alt](https://github.com/SibiryakovVictor/training_release_rep/raw/master/images/ranges_motion_example.png)
+![Image alt](https://github.com/SibiryakovVictor/manipulator_trajectory_planning/raw/master/images/ranges_motion_example.png)
 
 ### Описание препятствий
 #### Занести информацию о препятствиях в функцию getObstInitInfo с помощью структур AttachedDetal
@@ -38,13 +38,13 @@ src/main
 - Порядок занесения: произвольный
 - Пример заполнения:
 
-![Image alt](https://github.com/SibiryakovVictor/training_release_rep/raw/master/images/attached_detail_example.png)
+![Image alt](https://github.com/SibiryakovVictor/manipulator_trajectory_planning/raw/master/images/attached_detail_example.png)
 
 #### Добавить все заполненные структуры в оператор возврата return функции getObstInitInfo (env/info_loader/info_loader.cpp)
 
 Пример
 
-![Image alt](https://github.com/SibiryakovVictor/training_release_rep/raw/master/images/getObstInitInfo_return_example.png)
+![Image alt](https://github.com/SibiryakovVictor/manipulator_trajectory_planning/raw/master/images/getObstInitInfo_return_example.png)
 
 #### Уточнить параметры препятствий в env/obstacles/obst_parameters.h и config_space/conf_space_dims.h
 
@@ -70,7 +70,7 @@ https://www.coppeliarobotics.com/downloads
 
 Пример (манипулятор из env_info_generator.ttt)
 
-![Image alt](https://github.com/SibiryakovVictor/training_release_rep/raw/master/images/manip_img.jpg)
+![Image alt](https://github.com/SibiryakovVictor/manipulator_trajectory_planning/raw/master/images/manip_img.jpg)
 
 #### Добавить информацию о звеньях манипулятора с помощью изменения имён объектов их ограничивающих параллелепипедов
 
@@ -88,13 +88,13 @@ https://www.coppeliarobotics.com/downloads
 
 Пример именования объектов звеньев (манипулятор из env_info_generator.ttt)
 
-![Image alt](https://github.com/SibiryakovVictor/training_release_rep/raw/master/images/links_names.jpg)
+![Image alt](https://github.com/SibiryakovVictor/manipulator_trajectory_planning/raw/master/images/links_names.jpg)
 
 #### Добавить точки поворота звеньев относительно друг друга (точки крепления) с помощью объектов Dummy (Add -> Dummy)
 
 Пример (точка поворота звена, выделенного красным, относительно звена, выделенного синим)
 
-![Image alt](https://github.com/SibiryakovVictor/training_release_rep/raw/master/images/mount_link_example.jpg)
+![Image alt](https://github.com/SibiryakovVictor/manipulator_trajectory_planning/raw/master/images/mount_link_example.jpg)
 
 Правило именования точек крепления:
 
@@ -104,7 +104,7 @@ https://www.coppeliarobotics.com/downloads
 
 Пример именования точек крепления
 
-![Image alt](https://github.com/SibiryakovVictor/training_release_rep/raw/master/images/mount_link_names.jpg)
+![Image alt](https://github.com/SibiryakovVictor/manipulator_trajectory_planning/raw/master/images/mount_link_names.jpg)
 
 #### Уточнить параметры добавляемого манипулятора в env/manipulator/manip_parameters.h и config_space/conf_space_dims.h
 
@@ -116,7 +116,7 @@ https://www.coppeliarobotics.com/downloads
 
 Пример (препятствия из env_info_generator.ttt)
 
-![Image alt](https://github.com/SibiryakovVictor/training_release_rep/raw/master/images/obsts_img.jpg)
+![Image alt](https://github.com/SibiryakovVictor/manipulator_trajectory_planning/raw/master/images/obsts_img.jpg)
 
 #### Добавить информацию о препятствиях с помощью изменения имён объектов их ограничивающих параллелепипедов
 
@@ -136,13 +136,13 @@ https://www.coppeliarobotics.com/downloads
 
 Пример именования объектов препятствий (препятствия из env_info_generator.ttt)
 
-![Image alt](https://github.com/SibiryakovVictor/training_release_rep/raw/master/images/obsts_names.jpg)
+![Image alt](https://github.com/SibiryakovVictor/manipulator_trajectory_planning/raw/master/images/obsts_names.jpg)
 
 #### Добавить точки поворота требуемых препятствий с помощью объектов Dummy (Add -> Dummy)
 
 Пример (точка поворота препятствия, выделенного красным)
 
-![Image alt](https://github.com/SibiryakovVictor/training_release_rep/raw/master/images/mount_obst_example.jpg)
+![Image alt](https://github.com/SibiryakovVictor/manipulator_trajectory_planning/raw/master/images/mount_obst_example.jpg)
 
 Правило именования точек крепления:
 
@@ -152,7 +152,7 @@ https://www.coppeliarobotics.com/downloads
 
 Пример именования точек крепления
 
-![Image alt](https://github.com/SibiryakovVictor/training_release_rep/raw/master/images/mount_obst_names.jpg)
+![Image alt](https://github.com/SibiryakovVictor/manipulator_trajectory_planning/raw/master/images/mount_obst_names.jpg)
 
 #### Уточнить параметры препятствий в env/obstacles/obst_parameters.h и config_space/conf_space_dims.h
 
@@ -172,7 +172,7 @@ https://www.coppeliarobotics.com/downloads
 
 Пример именования дополнительных ограничивающих объемов
 
-![Image alt](https://github.com/SibiryakovVictor/training_release_rep/raw/master/images/otherBody_names.jpg)
+![Image alt](https://github.com/SibiryakovVictor/manipulator_trajectory_planning/raw/master/images/otherBody_names.jpg)
 
 После добавления ограничивающего объема с определенным именем в коде проекта появится функция, возвращающая этот ограничивающий объем с именем:
 
@@ -180,7 +180,7 @@ https://www.coppeliarobotics.com/downloads
 
 Пример смены ограничивающего объема:
 
-![Image alt](https://github.com/SibiryakovVictor/training_release_rep/raw/master/images/otherBody_example.jpg)
+![Image alt](https://github.com/SibiryakovVictor/manipulator_trajectory_planning/raw/master/images/otherBody_example.jpg)
 
 - про идентификаторы объектов смотреть **env/collision_detection/collision_check_pairs.h**
 
@@ -190,7 +190,7 @@ https://www.coppeliarobotics.com/downloads
 
 ## Пример использования
 
-![Image alt](https://github.com/SibiryakovVictor/training_release_rep/raw/master/images/usage_MotionPlanner_example.jpg)
+![Image alt](https://github.com/SibiryakovVictor/manipulator_trajectory_planning/raw/master/images/usage_MotionPlanner_example.jpg)
 
 ## Дополнительные возможности при использовании
 
