@@ -160,7 +160,7 @@ https://www.coppeliarobotics.com/downloads
 
 ### Добавление ограничивающих объемов, используемых для замены объемов звеньев манипулятора или препятствий
 
-#### Добавить на сцену дополнительные ограничивающие параллелепипеды с помощью объектов Cuboid (Add -> Primitive shape -> Cuboid)
+#### Добавить на сцену дополнительные ограничивающие параллелепипеды с помощью объектов Cuboid (Add -> Primitive shape -> Cuboid) ПО НЕОБХОДИМОСТИ
 
 #### Добавить информацию о дополнительных ограничивающих параллелепипедах с помощью изменения их имён
 
@@ -185,6 +185,17 @@ https://www.coppeliarobotics.com/downloads
 ![Image alt](https://github.com/SibiryakovVictor/manipulator_trajectory_planning/raw/master/images/otherBody_example.jpg)
 
 - про идентификаторы объектов смотреть **env/collision_detection/collision_check_pairs.h**
+
+### Генерация кода с информацией из созданной сцены
+
+- запустить симуляцию в открытой сцене робосимулятора и дождаться сообщения об окончании генерации кода, после чего приостановить симуляцию 
+
+  
+
+![Image alt](https://github.com/SibiryakovVictor/manipulator_trajectory_planning/raw/master/images/generation_msg.png)
+
+- найти в корневой директории робосимулятора сгенерированные файлы **info_loader.cpp** и **info_loader.h**
+- заменить сгенерированными файлами соответствующие файлы в директории проекта **src/main/env/info_loader**
 
 ### Определение объектов, между которыми возможно столкновение
 
